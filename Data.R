@@ -1,6 +1,6 @@
-require(jsonlite)
+library(jsonlite)
 library(tidyverse)
-
+library(data.table)
 ## SEASON 1
 
 url = 'https://storage.googleapis.com/kaggle-datasets/13668/18443/season1.json?GoogleAccessId=web-data@kaggle-161607.iam.gserviceaccount.com&Expires=1556306533&Signature=NC4hUMCuyLv4J9dk9JR7lTZDCgTL9UraL0BA8OPoUbKJWwjU14cfFCB4h3BdUJkSbngROdTYGWDfItNyKrBTrOpPt7hfVCMPp3PiRtFje%2BHfe%2F0ZGaycpzH4ASPn6tdbeJULF933OoVdbi%2B5dJzHyeYl%2FOPun5ZgfcTVs5VvD0JmepjhZOm0noBz8i%2BYPHjoUA2RggCg%2FTq3HNVgRjk2J3COZHrSW%2Bxus1F7ieXd0tgDoFRM0fzHQ3hThjz70PM7sjNGCwcA3UJn%2B6s9CdylBQUMBipQXw3h8Ong9lpl8kBDvaQU9kFkbvmmUWOCkd26%2FXArhpMJ6qKyXw2VvRxXbg%3D%3D'
@@ -17,8 +17,9 @@ for(i in 1:length(s1)){
   list_of_data[[i]]=holder
 }
 
-require(data.table)
-df1 = rbindlist(list_of_data) %>% as_tibble()
+df1 = rbindlist(list_of_data) %>%
+  as_tibble()%>%
+  mutate(season = 'Season 1')
 
 
 ## SEASON 2
@@ -37,7 +38,9 @@ for(i in 1:length(s2)){
 }
 
 require(data.table)
-df2 = rbindlist(list_of_data) %>% as_tibble()
+df2 = rbindlist(list_of_data) %>% 
+  as_tibble()%>%
+  mutate(season = 'Season 2')
 
 
 ## SEASON 3
@@ -57,7 +60,9 @@ for(i in 1:length(s3)){
 }
 
 require(data.table)
-df3 = rbindlist(list_of_data)%>% as_tibble()
+df3 = rbindlist(list_of_data)%>% 
+  as_tibble()%>%
+  mutate(season = 'Season 3')
 
 ## SEASON 4
 
@@ -67,7 +72,7 @@ s4 = fromJSON(url)
 
 list_of_data = list()
 
-for(i in 1:length(s4)){
+for(i in 1:(length(s4)-1)){
   holder = tibble(episode = names(s4[i]), number = names(s4[[i]]), text = NA)
   for(j in 1:nrow(holder)){
     holder$text[j]=s4[[i]][[j]]
@@ -75,7 +80,9 @@ for(i in 1:length(s4)){
   list_of_data[[i]]=holder
 }
 require(data.table)
-df4 = rbindlist(list_of_data)%>% as_tibble()
+df4 = rbindlist(list_of_data)%>% 
+  as_tibble()%>%
+  mutate(season = 'Season 4')
 
 ## SEASON 5
 
@@ -93,7 +100,9 @@ for(i in 1:length(s5)){
   list_of_data[[i]]=holder
 }
 require(data.table)
-df5 = rbindlist(list_of_data)%>% as_tibble()
+df5 = rbindlist(list_of_data)%>% 
+  as_tibble()%>%
+  mutate(season = 'Season 5')
 
 ## SEASON 6
 
@@ -111,7 +120,9 @@ for(i in 1:length(s6)){
   list_of_data[[i]]=holder
 }
 require(data.table)
-df6 = rbindlist(list_of_data)%>% as_tibble()
+df6 = rbindlist(list_of_data)%>% 
+  as_tibble()%>%
+  mutate(season = 'Season 6')
 
 ## SEASON 7
 
@@ -129,6 +140,11 @@ for(i in 1:length(s7)){
   list_of_data[[i]]=holder
 }
 require(data.table)
-df7 = rbindlist(list_of_data)%>% as_tibble()
+df7 = rbindlist(list_of_data)%>% 
+  as_tibble()%>%
+  mutate(season = 'Season 7')
 
-data = bind_rows(df1, df2, df3, df4, df5, df6, df7)
+data <- bind_rows(df1, df2, df3, df4, df5, df6, df7)
+
+write_rds(data, path = "Word_Cloud/words.rds")
+
