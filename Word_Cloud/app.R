@@ -33,11 +33,12 @@ getTermMatrix <- memoise(function(season) {
 
 ui <- fluidPage(
   # Application title
-  titlePanel("Word Cloud"),
+  titlePanel("Game of Thrones"),
   
   sidebarLayout(
     # Sidebar with a slider and selection inputs
     sidebarPanel(
+      helpText("Word cloud of the most used words."),
       selectInput("selection", "Choose a Season:",
                   choices = seasons),
       actionButton("update", "Change"),
