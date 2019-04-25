@@ -52,8 +52,11 @@ ui <- fluidPage(
     ),
     
     # Show Word Cloud
-    mainPanel(
-      plotOutput("plot")
+    mainPanel( 
+      tabsetPanel(id = "tabs",
+                           tabPanel("About", htmlOutput("about")),
+      tabPanel("Word Cloud", plotOutput("plot")),
+      tabPanel("Graphs", plotOutput("plot2")))
     )
   )
 )
@@ -83,6 +86,17 @@ server <- function(input, output, session) {
                   min.freq = input$freq, max.words=input$max,
                   colors=brewer.pal(8, "Dark2"))
   })
-}
+output$plot2 <- renderPlot({
+  
+  
+}) 
+
+output$about <- renderUI({
+  str1 <- paste("Game of Thrones")
+  str2 <- paste("The plot: ")
+  str3 <- paste("") 
+  str4 <- paste("")
+  
+  HTML(paste(h1(str1), p(str2), h1(str3), p(str4)))})}
 
 shinyApp(ui = ui, server = server)
