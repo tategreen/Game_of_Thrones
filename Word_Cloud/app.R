@@ -29,6 +29,20 @@ getTermMatrix <- memoise(function(season) {
   m = as.matrix(myDTM)
   
   sort(rowSums(m), decreasing = TRUE)
+  
+  senti <- data %>%
+    unnest_tokens(word, text) %>%
+    group_by(season) %>%
+    mutate(linenumber = row_number())%>%
+    ungroup()
+
+  all_words <- senti %>%
+    filter(n > 300) %>%
+    mutate(word = reorder(word, n)) %>%
+    ggplot(aes(word, n)) +
+    geom_col() +
+    xlab(NULL) +
+    coord_flip() 
 })
 
 ui <- fluidPage(
@@ -87,7 +101,7 @@ server <- function(input, output, session) {
                   colors=brewer.pal(8, "Dark2"))
   })
 output$plot2 <- renderPlot({
-  
+ 
   
 }) 
 
