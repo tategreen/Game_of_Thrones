@@ -5,6 +5,8 @@ library(memoise)
 library(tidyverse)
 
 data <- read_rds("words.rds")
+allwords <- read_rds("all_words.rds")
+top_10 <- read_rds("top_10.rds")
 
 seasons <<- unique(data$season)
 
@@ -30,19 +32,6 @@ getTermMatrix <- memoise(function(season) {
   
   sort(rowSums(m), decreasing = TRUE)
   
-  senti <- data %>%
-    unnest_tokens(word, text) %>%
-    group_by(season) %>%
-    mutate(linenumber = row_number())%>%
-    ungroup()
-
-  all_words <- senti %>%
-    filter(n > 300) %>%
-    mutate(word = reorder(word, n)) %>%
-    ggplot(aes(word, n)) +
-    geom_col() +
-    xlab(NULL) +
-    coord_flip() 
 })
 
 ui <- fluidPage(
@@ -70,7 +59,7 @@ ui <- fluidPage(
       tabsetPanel(id = "tabs",
                            tabPanel("About", htmlOutput("about")),
       tabPanel("Word Cloud", plotOutput("plot")),
-      tabPanel("Graphs", plotOutput("plot2")))
+      tabPanel("Graphs", plotOutput("allwords"), plotOutput("top_10")))
     )
   )
 )
@@ -98,19 +87,25 @@ server <- function(input, output, session) {
     v <- terms()
     wordcloud_rep(names(v), v, scale=c(4,0.5),
                   min.freq = input$freq, max.words=input$max,
-                  colors=brewer.pal(8, "Dark2"))
+                  colors=brewer.pal(8, "RdGy"))
   })
-output$plot2 <- renderPlot({
- 
-  
-}) 
+output$allwords <- renderPlot({
+ allwords
+})
+output$top_10 <- renderPlot({
+    top_10
+})
+
 
 output$about <- renderUI({
   str1 <- paste("Game of Thrones")
-  str2 <- paste("The plot: ")
+  str2 <- paste("Throughout it's 7 seasons, J. R")
   str3 <- paste("") 
   str4 <- paste("")
   
   HTML(paste(h1(str1), p(str2), h1(str3), p(str4)))})}
 
 shinyApp(ui = ui, server = server)
+
+##I used code from https://shiny.rstudio.com/gallery/word-cloud.html to figure
+## out my word cloud code
