@@ -99,9 +99,9 @@ output$top_10 <- renderPlot({
 
 output$about <- renderUI({
   str1 <- paste("Game of Thrones")
-  str2 <- paste("Throughout it's 7 seasons, J. R")
-  str3 <- paste("") 
-  str4 <- paste("")
+  str2 <- paste("Based off of George R.R. Martin's best selling book series.  The hit HBO series, Game of Thrones is in the peak of it's 8th and final season.  As conspiricy theories progress and fan fiction dominates all media fronts, I wanted to take a deeper look into the script of the past 7 seasons and do a deeper analysis for myself.   ")
+  str3 <- paste("Things to note:") 
+  str4 <- paste("An interesting thing to note within my analysis is in the sentiment analysis how stark is looked at in the negative and I kept it because I thought it was an interesting factor.  Because in the series stark is actually a name and not used in a negative way, it is interesting that the function labeled it as negative.")
   
   HTML(paste(h1(str1), p(str2), h1(str3), p(str4)))})}
 

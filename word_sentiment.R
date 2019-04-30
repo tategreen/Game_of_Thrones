@@ -29,7 +29,8 @@ senti <- senti %>%
 all_words <- senti %>%
   filter(n > 300) %>%
   mutate(word = reorder(word, n)) %>%
-  ggplot(aes(word, n)) +
+  ggplot(aes(word, n, fill = n)) +
+  scale_colour_gradient2() +
   geom_col() +
   xlab(NULL) +
   coord_flip()

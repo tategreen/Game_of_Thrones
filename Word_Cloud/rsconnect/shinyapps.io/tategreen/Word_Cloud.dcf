@@ -1,0 +1,12 @@
+name: Word_Cloud
+title: Word_Cloud
+username:
+account: tategreen
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 890744
+bundleId: 2050096
+url: https://tategreen.shinyapps.io/Word_Cloud/
+when: 1556638613.32037
+asMultiple: FALSE
+asStatic: FALSE
